@@ -1,118 +1,130 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../App.css";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function Home() {
-  const [tasks, setTasks] = useState([]);
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [difficultyFilter, setDifficultyFilter] = useState("all");
+export default function AddTask() {
+  const [task, setTask] = useState({
+    users: [],
+    taskDetail: "",
+    difficulty: "",
+    completed: false,
+  });
+
+  const [userList, setUserList] = useState([]);
+  const [local, setLocal] = useState([]);
+  const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("tasks")) || [];
-    setTasks(saved);
+    fetch(`https://jsonplaceholder.typicode.com/users`)
+      .then((res) => res.json())
+      .then((data) => setUserList(data))
+      .catch((err) => console.error("User fetch error:", err));
   }, []);
 
-  const handleDelete = (id) => {
-    const updated = tasks.filter((task) => task.id !== id);
-    localStorage.setItem("tasks", JSON.stringify(updated));
-    setTasks(updated);
-  };
+  useEffect(() => {
+    const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    setLocal(savedTasks);
+  }, []);
 
-  const handleComplete = (id) => {
-    const updated = tasks.map((task) =>
-      task.id === id ? { ...task, completed: !task.completed } : task
-    );
-    localStorage.setItem("tasks", JSON.stringify(updated));
-    setTasks(updated);
-  };
+  useEffect(() => {
+    if (id) {
+      const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      const foundTask = savedTasks.find((t) => t.id?.toString() === id);
+      if (foundTask) {
+        setTask(foundTask);
+      }
+    }
+  }, [id]);
 
-  const handleEdit = (id) => {
-    navigate(`/add/${id}`);
-  };
-
-  const filteredTasks = tasks
-    .filter((task) => {
-      const userNames = Array.isArray(task.users) ? task.users.join(" ").toLowerCase() : "";
-      const detail = task.taskDetail?.toLowerCase() || "";
-      return (
-        userNames.includes(search.toLowerCase()) ||
-        detail.includes(search.toLowerCase())
-      );
-    })
-    .filter((task) => {
-      if (statusFilter === "completed") return task.completed;
-      if (statusFilter === "incomplete") return !task.completed;
-      return true;
-    })
-    .filter((task) => {
-      if (difficultyFilter === "all") return true;
-      return task.difficulty === difficultyFilter;
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    setTask((prev) => {
+      if (checked) {
+        // İşarələnən istifadəçini əlavə et (əgər yoxdursa)
+        if (!prev.users.includes(value)) {
+          return { ...prev, users: [...prev.users, value] };
+        }
+      } else {
+        // İşarəni götürülən istifadəçini çıxar
+        return { ...prev, users: prev.users.filter((u) => u !== value) };
+      }
+      return prev;
     });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setTask((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let updatedTasks;
+
+    if (id) {
+      updatedTasks = local.map((t) =>
+        t.id?.toString() === id ? { ...task, id: parseInt(id) } : t
+      );
+    } else {
+      const newTask = { ...task, id: Date.now() };
+      updatedTasks = [...local, newTask];
+    }
+
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    setLocal(updatedTasks);
+    navigate("/");
+  };
 
   return (
     <div>
-      <h2>All Tasks</h2>
+      <h2>{id ? "Edit Task" : "Add Task"}</h2>
 
-      <div className="filtr">
-        <input
-          type="text"
-          placeholder="Search by user or task..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Select Users:</label>
+          <div>
+            {userList.map((u) => (
+              <label key={u.id} style={{ marginRight: "15px", display: "inline-block" }}>
+                <input
+                  type="checkbox"
+                  value={u.name}
+                  checked={task.users.includes(u.name)}
+                  onChange={handleCheckboxChange}
+                />
+                {u.name}
+              </label>
+            ))}
+          </div>
 
-        <select
-          onChange={(e) => setDifficultyFilter(e.target.value)}
-          value={difficultyFilter}
-        >
-          <option value="all">All</option>
-          <option value="Easy">Easy</option>
-          <option value="Medium">Medium</option>
-          <option value="Hard">Hard</option>
-          <option value="Very hard">Very hard</option>
-        </select>
-        <select
-          onChange={(e) => setStatusFilter(e.target.value)}
-          value={statusFilter}
-        >
-          <option value="all">All</option>
-          <option value="completed">Completed</option>
-          <option value="incomplete">Incomplete</option>
-        </select>
-      </div>
+          <label>Difficulty:</label>
+          <select
+            name="difficulty"
+            value={task.difficulty}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select difficulty</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+            <option value="Very hard">Very hard</option>
+          </select>
 
-      {filteredTasks.length === 0 ? (
-        <p>Not Found</p>
-      ) : (
-        <ul className="task-list">
-          {filteredTasks.map((task) => (
-            <li
-              className={task.completed ? "completed" : "incomplete"}
-              key={task.id}
-            >
-              <strong>Users:</strong> {Array.isArray(task.users) ? task.users.join(", ") : "None"}
-              <br />
-              <strong>Task:</strong> <p>{task.taskDetail}</p>
-              <strong>Difficulty:</strong> {task.difficulty || "Not specified"}
-              <br />
-              <span>Status: {task.completed ? "Completed" : "Incomplete"}</span>
-              <div className="button-group">
-                <button className="btn" onClick={() => handleEdit(task.id)}>
-                  Edit
-                </button>
-                <button className="btn" onClick={() => handleDelete(task.id)}>
-                  Delete
-                </button>
-                <button className="btn" onClick={() => handleComplete(task.id)}>
-                  {task.completed ? "Undo" : "Complete"}
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+          <label>Task Detail:</label>
+          <input
+            type="text"
+            name="taskDetail"
+            value={task.taskDetail}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <button type="submit">{id ? "Update" : "Add"}</button>
+      </form>
     </div>
   );
 }
