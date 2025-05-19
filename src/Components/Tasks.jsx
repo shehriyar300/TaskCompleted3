@@ -34,10 +34,12 @@ export default function Home() {
 
   const filteredTasks = tasks
     .filter((task) => {
-      const name = Array.isArray(task.name)
-        ? task.name.join(" ")
-        : (task.name || "").toString();
-      return name.toLowerCase().includes(search.toLowerCase());
+      
+     
+      console.log(task);
+      return task.taskDetail.toLowerCase().includes(search.toLowerCase())||
+      task.users.join("").toLowerCase().includes(search.toLowerCase())
+      
     })
     .filter((task) => {
       if (statusFilter === "completed") return task.completed;
@@ -57,7 +59,7 @@ export default function Home() {
         <input
           type="text"
           placeholder="Search..."
-          value={search}
+          value={search.trim()}
           onChange={(e) => setSearch(e.target.value)}
         />
 
@@ -95,7 +97,7 @@ export default function Home() {
                   ? task.users.join(", ").slice(0, 20) + "..."
                   : task.users.join(", ")}
               </strong>
-              - <p>{task.taskDetail}</p>
+              - <p>{task.taskDetail.trim()}</p>
               <br />
               Difficulty: {task.difficulty || "Not specified"}
               <br />

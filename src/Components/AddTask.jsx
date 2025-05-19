@@ -72,6 +72,7 @@ export default function AddTask() {
       const newTask = { ...task, id: Date.now() };
       updatedTasks = [...local, newTask];
     }
+console.log(Date.now());
 
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
     setLocal(updatedTasks);
@@ -129,6 +130,7 @@ export default function AddTask() {
             value={task.taskDetail}
             onChange={handleChange}
             required
+          
           />
         </div>
 
