@@ -87,15 +87,24 @@ export default function AddTask() {
           <label>Select Users:</label>
           <div>
             {userList.map((u) => (
-              <label key={u.id} style={{ marginRight: "15px", display: "inline-block" }}>
-                <input
-                  type="checkbox"
-                  value={u.name}
-                  checked={task.users.includes(u.name)}
-                  onChange={handleCheckboxChange}
-                />
-                {u.name}
-              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+  <input
+    type="checkbox"
+    value={u.name}
+    checked={task.users.includes(u.name)}
+    onChange={handleCheckboxChange}
+  />
+  <img
+    src={
+      u.image ||
+      `https://randomuser.me/api/portraits/men/${u.id}.jpg`
+    }
+    alt={u.name}
+    style={{ width: 40, height: 40, borderRadius: "50%" }}
+  />
+  <span>{u.name}</span>
+</label>
+
             ))}
           </div>
 
