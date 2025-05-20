@@ -36,7 +36,7 @@ export default function Home() {
     .filter((task) => {
       
      
-      console.log(task);
+      
       return task.taskDetail.toLowerCase().includes(search.toLowerCase())||
       task.users.join("").toLowerCase().includes(search.toLowerCase())
       
@@ -112,6 +112,8 @@ export default function Home() {
                 <button className="btn" onClick={() => handleComplete(task.id)}>
                   {task.completed ? "Undo" : "Complete"}
                 </button>
+                <br />
+                <button className="btn" onClick={() => navigate(`/detailtask/${task.id}`)}> Read More </button>
               </div>
             </li>
           ))}

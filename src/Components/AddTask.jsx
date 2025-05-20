@@ -8,7 +8,6 @@ export default function AddTask() {
     difficulty: "",
     completed: false,
   });
-
   const [userList, setUserList] = useState([]);
   const [local, setLocal] = useState([]);
   const { id } = useParams();
@@ -96,7 +95,7 @@ export default function AddTask() {
                   value={u.name}
                   checked={task.users.includes(u.name)}
                   onChange={handleCheckboxChange}
-                  required
+                  required={task.users.length === 0}
                 />
                 <img
                   src={
@@ -135,7 +134,7 @@ export default function AddTask() {
           />
         </div>
 
-        <button type="submit">{id ? "Update" : "Add"}</button>
+        <button type="submit"  >{id ? "Update" : "Add"} </button>
       </form>
     </div>
   );

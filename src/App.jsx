@@ -4,6 +4,7 @@ import Home from "./Components/Tasks";
 import AddTask from "./Components/AddTask";
 import EditTask from "./Components/EditTask"; 
 import "./App.css";
+import DetailTask from "./Components/DetailTask";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/add" element={<AddTask />} />
         <Route path="/add/:id" element={<EditTask />} /> 
+        <Route path="/detailtask/:id" element={<DetailTask />} /> 
       </Routes>
     </Router>
   );
