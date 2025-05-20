@@ -97,7 +97,7 @@ export default function Home() {
                   ? task.users.join(", ").slice(0, 20) + "..."
                   : task.users.join(", ")}
               </strong>
-              - <p>{task.taskDetail.trim()}</p>
+              - <p>{task.taskDetail.trim().slice(0, 20)+"...."}</p>
               <br />
               Difficulty: {task.difficulty || "Not specified"}
               <br />
