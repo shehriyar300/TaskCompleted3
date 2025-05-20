@@ -72,7 +72,7 @@ export default function AddTask() {
       const newTask = { ...task, id: Date.now() };
       updatedTasks = [...local, newTask];
     }
-console.log(Date.now());
+    console.log(Date.now());
 
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
     setLocal(updatedTasks);
@@ -88,24 +88,26 @@ console.log(Date.now());
           <label>Select Users:</label>
           <div>
             {userList.map((u) => (
-              <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-  <input
-    type="checkbox"
-    value={u.name}
-    checked={task.users.includes(u.name)}
-    onChange={handleCheckboxChange}
-  />
-  <img
-    src={
-      u.image ||
-      `https://randomuser.me/api/portraits/men/${u.id}.jpg`
-    }
-    alt={u.name}
-    style={{ width: 40, height: 40, borderRadius: "50%" }}
-  />
-  <span>{u.name}</span>
-</label>
-
+              <label
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
+                <input
+                  type="checkbox"
+                  value={u.name}
+                  checked={task.users.includes(u.name)}
+                  onChange={handleCheckboxChange}
+                  required
+                />
+                <img
+                  src={
+                    u.image ||
+                    `https://randomuser.me/api/portraits/men/${u.id}.jpg`
+                  }
+                  alt={u.name}
+                  style={{ width: 40, height: 40, borderRadius: "50%" }}
+                />
+                <span>{u.name}</span>
+              </label>
             ))}
           </div>
 
@@ -127,10 +129,9 @@ console.log(Date.now());
           <input
             type="text"
             name="taskDetail"
-            value={task.taskDetail}
+            value={task.taskDetail.trimStart()}
             onChange={handleChange}
             required
-          
           />
         </div>
 
