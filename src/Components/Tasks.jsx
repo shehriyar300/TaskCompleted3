@@ -113,7 +113,7 @@ export default function Home() {
                   {task.completed ? "Undo" : "Complete"}
                 </button>
                 <br />
-                <button className="btn" onClick={() => navigate(`/detailtask/${task.id}`)}> Read More </button>
+                <button className="btn" onClick={() => navigate(`/detailtask/${task.id}`, { state: task })}> Read More </button>
               </div>
             </li>
           ))}

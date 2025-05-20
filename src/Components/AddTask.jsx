@@ -68,10 +68,10 @@ export default function AddTask() {
         t.id?.toString() === id ? { ...task, id: parseInt(id) } : t
       );
     } else {
-      const newTask = { ...task, id: Date.now() };
+      const newTask = { ...task, id: Date.now() ,image: `https://randomuser.me/api/portraits/men/${userList.length}.jpg`};
       updatedTasks = [...local, newTask];
     }
-    console.log(Date.now());
+    console.log("salam");
 
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
     setLocal(updatedTasks);
@@ -105,6 +105,8 @@ export default function AddTask() {
                   alt={u.name}
                   style={{ width: 40, height: 40, borderRadius: "50%" }}
                 />
+                {console.log(u)
+                }
                 <span>{u.name}</span>
               </label>
             ))}
