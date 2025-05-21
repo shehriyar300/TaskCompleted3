@@ -135,7 +135,7 @@ export default function AddTask() {
             maxLength={25}
           />
           <label>Task Detail:</label>
-          <textarea required value={task.taskDetail} onChange={handleChange} name="taskDetail" id="" maxLength={200} style={{ height: "100px" , width: "100%" }}></textarea>
+          <textarea required value={task.taskDetail} onChange={handleChange} name="taskDetail" id="" maxLength={2000} style={{ height: "100px" , width: "100%" }}></textarea>
 
         </div>
 
