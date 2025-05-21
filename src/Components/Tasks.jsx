@@ -34,12 +34,11 @@ export default function Home() {
 
   const filteredTasks = tasks
     .filter((task) => {
-      
-     
-      
-      return task.taskDetail.toLowerCase().includes(search.toLowerCase())||
-      task.users.join("").toLowerCase().includes(search.toLowerCase())
-      
+      return (
+        task.taskDetail.toLowerCase().includes(search.toLowerCase()) ||
+        task.users.join("").toLowerCase().includes(search.toLowerCase())||
+        task.taskname.toLowerCase().includes(search.toLowerCase())
+      );
     })
     .filter((task) => {
       if (statusFilter === "completed") return task.completed;
@@ -59,7 +58,7 @@ export default function Home() {
         <input
           type="text"
           placeholder="Search..."
-          value={search.trim()}
+          value={search.trimStart()}
           onChange={(e) => setSearch(e.target.value)}
         />
 
@@ -97,7 +96,12 @@ export default function Home() {
                   ? task.users.join(", ").slice(0, 20) + "..."
                   : task.users.join(", ")}
               </strong>
-              - <p>{task.taskDetail.trim().slice(0, 20)+"...."}</p>
+              <p>{task.taskname}</p>
+              <p>
+                {task.taskDetail.length > 20
+                  ? task.taskDetail.trim().slice(0, 20) + "...."
+                  : task.taskDetail}
+              </p>
               <br />
               Difficulty: {task.difficulty || "Not specified"}
               <br />
@@ -113,7 +117,15 @@ export default function Home() {
                   {task.completed ? "Undo" : "Complete"}
                 </button>
                 <br />
-                <button className="btn" onClick={() => navigate(`/detailtask/${task.id}`, { state: task })}> Read More </button>
+                <button
+                  className="btn"
+                  onClick={() =>
+                    navigate(`/detailtask/${task.id}`, { state: task })
+                  }
+                >
+                  {" "}
+                  Read More{" "}
+                </button>
               </div>
             </li>
           ))}

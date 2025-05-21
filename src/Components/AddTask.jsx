@@ -85,7 +85,7 @@ export default function AddTask() {
       <form onSubmit={handleSubmit}>
         <div>
           <label>Select Users:</label>
-          <div>
+          <div style={{height:"250px" , overflowY: "scroll", border: "1px solid #ccc", padding: "10px", borderRadius: "5px" , marginBottom: "10px"}}>
             {userList.map((u) => (
               <label
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
@@ -125,15 +125,18 @@ export default function AddTask() {
             <option value="Hard">Hard</option>
             <option value="Very hard">Very hard</option>
           </select>
-
-          <label>Task Detail:</label>
+          <label>Task Name</label>
           <input
             type="text"
-            name="taskDetail"
-            value={task.taskDetail.trimStart()}
+            name="taskname"
+            value={task.taskname}
             onChange={handleChange}
             required
+            maxLength={25}
           />
+          <label>Task Detail:</label>
+          <textarea required value={task.taskDetail} onChange={handleChange} name="taskDetail" id="" maxLength={200} style={{ height: "100px" , width: "100%" }}></textarea>
+
         </div>
 
         <button type="submit"  >{id ? "Update" : "Add"} </button>

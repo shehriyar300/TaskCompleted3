@@ -47,7 +47,7 @@ function DetailTask() {
       <div className="detail">
        
         <p>
-          <strong>Task ID:</strong> {task.id}
+          <strong >Task ID:</strong> {task.id}
         </p>
         <p>
           <strong>Task Detail:</strong> {task.taskDetail}

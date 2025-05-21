@@ -76,37 +76,44 @@ export default function EditTask() {
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: "10px" }}>
           <label>Select Users:</label>
-          <div>
+       <div style={{height:"250px" , overflowY: "scroll", border: "1px solid #ccc", padding: "10px", borderRadius: "5px" , marginBottom: "10px"}}>
             {userList.map((u) => (
-            <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-  <input
-    type="checkbox"
-    value={u.name}
-    checked={task.users.includes(u.name)}
-    onChange={handleCheckboxChange}
-  />
-  <img
-    src={
-      u.image ||
-      `https://randomuser.me/api/portraits/men/${u.id}.jpg`
-    }
-    alt={u.name}
-    style={{ width: 40, height: 40, borderRadius: "50%" }}
-  />
-  <span>{u.name}</span>
-</label>
+              <label
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
+                <input
+                  type="checkbox"
+                  value={u.name}
+                  checked={task.users.includes(u.name)}
+                  onChange={handleCheckboxChange}
+                  required={task.users.length === 0}
+                />
+                <img
+                  src={
+                    u.image ||
+                    `https://randomuser.me/api/portraits/men/${u.id}.jpg`
+                  }
+                  alt={u.name}
+                  style={{ width: 40, height: 40, borderRadius: "50%" }}
+                />
+                {console.log(u)
+                }
+                <span>{u.name}</span>
+              </label>
             ))}
           </div>
 
-          <label>Task Detail:</label>
+          <label>Task Name:</label>
           <input 
             type="text"
-            name="taskDetail"
+            name="taskname"
             maxLength={100}
-            value={task.taskDetail}
+            value={task.taskname}
             onChange={handleChange}
             required
           />
+<label>Task Detail:</label>
+          <textarea required value={task.taskDetail} onChange={handleChange} name="taskDetail" id="" maxLength={200} style={{ height: "100px" , width: "100%" }}></textarea>
 
           <label>Difficulty:</label>
           <select
