@@ -93,7 +93,7 @@ export default function Home() {
             >
               <strong>
                 {task.users.join(", ").length > 20
-                  ? task.users.join(", ").slice(0, 20) + "..."
+                  ? task.users.join(", ").slice(0, 20) + "...." + (task.users.length - 1)
                   : task.users.join(", ")}
               </strong>
               <p>{task.taskname}</p>
