@@ -34,9 +34,10 @@ export default function Home() {
 
   const filteredTasks = tasks
     .filter((task) => {
+      const userNames = task.users.map((u) => u.name).join(" ");
       return (
         task.taskDetail.toLowerCase().includes(search.toLowerCase()) ||
-        task.users.join("").toLowerCase().includes(search.toLowerCase())||
+        userNames.toLowerCase().includes(search.toLowerCase()) ||
         task.taskname.toLowerCase().includes(search.toLowerCase())
       );
     })
@@ -86,49 +87,53 @@ export default function Home() {
         <p>Not Found</p>
       ) : (
         <ul className="task-list">
-          {filteredTasks.map((task) => (
-            <li
-              className={task.completed ? "completed" : "incomplete"}
-              key={task.id}
-            >
-              <strong>
-                {task.users.join(", ").length > 20
-                  ? task.users.join(", ").slice(0, 20) + "...." + (task.users.length - 1)
-                  : task.users.join(", ")}
-              </strong>
-              <p>{task.taskname}</p>
-              <p>
-                {task.taskDetail.length > 20
-                  ? task.taskDetail.trim().slice(0, 20) + "...."
-                  : task.taskDetail}
-              </p>
-              <br />
-              Difficulty: {task.difficulty || "Not specified"}
-              <br />
-              <span>Status: {task.completed ? "Completed" : "Incomplete"}</span>
-              <div className="button-group">
-                <button className="btn" onClick={() => handleEdit(task.id)}>
-                  Edit
-                </button>
-                <button className="btn" onClick={() => handleDelete(task.id)}>
-                  Delete
-                </button>
-                <button className="btn" onClick={() => handleComplete(task.id)}>
-                  {task.completed ? "Undo" : "Complete"}
-                </button>
+          {filteredTasks.map((task) => {
+            const userNames = task.users.map((u) => u.name).join(", ");
+            return (
+              <li
+                className={task.completed ? "completed" : "incomplete"}
+                key={task.id}
+              >
+                <strong>
+                  {userNames.length > 20
+                    ? userNames.slice(0, 20) + "...." + (task.users.length - 1)
+                    : userNames}
+                </strong>
+                <p>{task.taskname}</p>
+                <p>
+                  {task.taskDetail.length > 20
+                    ? task.taskDetail.trim().slice(0, 20) + "...."
+                    : task.taskDetail}
+                </p>
                 <br />
-                <button
-                  className="btn"
-                  onClick={() =>
-                    navigate(`/detailtask/${task.id}`, { state: task })
-                  }
-                >
-                  {" "}
-                  Read More{" "}
-                </button>
-              </div>
-            </li>
-          ))}
+                Difficulty: {task.difficulty || "Not specified"}
+                <br />
+                <span>
+                  Status: {task.completed ? "Completed" : "Incomplete"}
+                </span>
+                <div className="button-group">
+                  <button className="btn" onClick={() => handleEdit(task.id)}>
+                    Edit
+                  </button>
+                  <button className="btn" onClick={() => handleDelete(task.id)}>
+                    Delete
+                  </button>
+                  <button className="btn" onClick={() => handleComplete(task.id)}>
+                    {task.completed ? "Undo" : "Complete"}
+                  </button>
+                  <br />
+                  <button
+                    className="btn"
+                    onClick={() =>
+                      navigate(`/detailtask/${task.id}`, { state: task })
+                    }
+                  >
+                    Read More
+                  </button>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

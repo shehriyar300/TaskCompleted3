@@ -8,6 +8,7 @@ export default function EditTask() {
 
   const [task, setTask] = useState({
     users: [],
+    taskname:"",
     taskDetail: "",
     difficulty: "",
     completed: false,
@@ -77,8 +78,8 @@ export default function EditTask() {
         <div style={{ marginBottom: "10px" }}>
           <label>Select Users:</label>
        <div style={{height:"250px" , overflowY: "scroll", border: "1px solid #ccc", padding: "10px", borderRadius: "5px" , marginBottom: "10px"}}>
-            {userList.map((u) => (
-              <label
+            {userList.map((u ,key) => (
+              <label key={key}
                 style={{ display: "flex", alignItems: "center", gap: "10px" }}
               >
                 <input
@@ -96,8 +97,7 @@ export default function EditTask() {
                   alt={u.name}
                   style={{ width: 40, height: 40, borderRadius: "50%" }}
                 />
-                {console.log(u)
-                }
+               
                 <span>{u.name}</span>
               </label>
             ))}

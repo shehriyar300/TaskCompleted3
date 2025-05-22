@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function DetailTask() {
-  const location = useLocation();
-  const { id } = useParams(); // URL-dən id gəlir
+  const { id } = useParams();
   const [task, setTask] = useState(null);
 
   useEffect(() => {
-    // localStorage-dan task list-i alırıq
     const storedTasks = localStorage.getItem("tasks");
     if (storedTasks) {
       try {
@@ -25,6 +23,7 @@ function DetailTask() {
       <div>
         <p>Task not found</p>
         <Link
+          to="/"
           style={{
             textAlign: "center",
             display: "block",
@@ -33,7 +32,6 @@ function DetailTask() {
             textDecoration: "none",
             color: "black",
           }}
-          to="/"
         >
           Home
         </Link>
@@ -42,12 +40,13 @@ function DetailTask() {
 
   return (
     <>
-      {console.log(location)}
       <h2>Detail Task</h2>
       <div className="detail">
-       
         <p>
-          <strong >Task ID:</strong> {task.id}
+          <strong>Task ID:</strong> {task.id}
+        </p>
+        <p>
+          <strong>Task Name:</strong> {task.taskname}
         </p>
         <p>
           <strong>Task Detail:</strong> {task.taskDetail}
@@ -60,15 +59,11 @@ function DetailTask() {
           {task.users.map((user, index) => (
             <React.Fragment key={index}>
               <img
-                src={`https://randomuser.me/api/portraits/men/${index}.jpg`}
-                alt={task.name}
-                style={{ width: 40, height: 40, borderRadius: "50%" }}
+                src={`https://randomuser.me/api/portraits/men/${user.id}.jpg`}
+                alt={user.name}
+                style={{ width: 40, height: 40, borderRadius: "50%", marginRight: "8px" }}
               />
-              <span>
-                {console.log(index)}
-                {user}
-                {index < task.users.length - 1 ? ", " : ""}
-              </span>
+              <span>{user.name}</span>{" "}
             </React.Fragment>
           ))}
         </p>
