@@ -54,19 +54,20 @@ function DetailTask() {
         <p>
           <strong>Difficulty:</strong> {task.difficulty}
         </p>
-        <p>
+        <div className="user-list">
           <strong>Users:</strong>{" "}
-          {task.users.map((user, index) => (
-            <React.Fragment key={index}>
-              <img
-                src={`https://randomuser.me/api/portraits/men/${user.id}.jpg`}
-                alt={user.name}
-                style={{ width: 40, height: 40, borderRadius: "50%", marginRight: "8px" }}
-              />
-              <span>{user.name}</span>{" "}
-            </React.Fragment>
-          ))}
-        </p>
+          <span className="user-info">
+            {task.users.map((user, index) => (
+              <React.Fragment key={index}>
+                <p><img
+                  src={`https://randomuser.me/api/portraits/men/${user.id}.jpg`}
+                  alt={user.name}
+                />
+                <span>{user.name}</span></p>
+              </React.Fragment>
+            ))}
+          </span>
+        </div>
         <p>
           <strong>Status:</strong> {task.completed ? "Completed" : "Incomplete"}
         </p>
